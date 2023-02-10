@@ -4,7 +4,8 @@ import torch.nn as nn
 import torchvision.transforms as trans
 import torch.nn.functional as F
 
-device = 'cpu'
+
+device = 'cuda'
 PATH = './trainedModel/mnist_cnn_net.pth'
 transform = trans.Compose([trans.ToTensor(), trans.Normalize((0.5,), (0.5,))])
 
