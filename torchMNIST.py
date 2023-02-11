@@ -4,9 +4,10 @@ import torch.nn as nn
 import torchvision.transforms as trans
 import torch.optim as op
 import torch.nn.functional as F
+import pickle
 
 PATH = './trainedModel/mnist_cnn_net.pth'
-device  = 'cpu'
+device = torch.device('cuda')
 
 transform = trans.Compose([trans.ToTensor(),
                            trans.Normalize((0.5, ), (0.5, ))])
@@ -40,11 +41,11 @@ images, labels = next(dataiter)
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
-        self.conv1 = nn.Conv2d(1, 32, 3)
-        self.conv2 = nn.Conv2d(32, 64, 3)
-        self.pool = nn.MaxPool2d(2, 2)
-        self.fc1 = nn.Linear(64 * 12 * 12, 128)
-        self.fc2 = nn.Linear(128, 10)
+        self.conv1 = nn.Conv2d(1, 32, 3).to(device)
+        self.conv2 = nn.Conv2d(32, 64, 3).to(device)
+        self.pool = nn.MaxPool2d(2, 2).to(device)
+        self.fc1 = nn.Linear(64 * 12 * 12, 128).to(device)
+        self.fc2 = nn.Linear(128, 10).to(device)
 
     def forward(self, x):
         x = F.relu(self.conv1(x))
@@ -56,6 +57,7 @@ class Net(nn.Module):
 
 net = Net()
 net.to(device)
+print(next(net.parameters()).device)
 #print(net)
 
 criterion = nn.CrossEntropyLoss()
@@ -104,5 +106,12 @@ for epoch in range (epochs):
     epoch_log.append(epoch_num)
     loss_log.append(actual_loss)
     accuracy_log.append(accuracy)
+net.to(device)
 
 torch.save(net.state_dict(), PATH)
+fp = open("epoch_log.pkl", "wb")
+fp1 = open("loss_log.pkl", "wb")
+fp2 = open("accuracy_log.pkl", "wb")
+pickle.dump(epoch_log, fp)
+pickle.dump(loss_log, fp1)
+pickle.dump(accuracy_log, fp2)
