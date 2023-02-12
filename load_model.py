@@ -8,7 +8,7 @@ from matplotlib import pyplot as plt
 
 
 device = torch.device('cpu')
-PATH = './trainedModel/mnist_cnn_net.pth'
+PATH = './trainedModel/mnist_cnn_net.pt'
 transform = trans.Compose([trans.ToTensor(), trans.Normalize((0.5,), (0.5,))])
 
 
@@ -71,8 +71,8 @@ ax1.plot(epoch_log, loss_log, 'g-')
 ax2.plot(epoch_log, accuracy_log, 'b-')
 
 ax1.set_xlabel('Epochs')
-ax1.set_ylabel('Loss', color='b')
-ax2.set_ylabel('Test Accuracy', color='r')
+ax1.set_ylabel('Loss', color='g')
+ax2.set_ylabel('Test Accuracy', color='b')
 
 plt.show()
 

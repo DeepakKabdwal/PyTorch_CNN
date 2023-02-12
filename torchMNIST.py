@@ -6,7 +6,7 @@ import torch.optim as op
 import torch.nn.functional as F
 import pickle
 
-PATH = './trainedModel/mnist_cnn_net.pth'
+PATH = './trainedModel/mnist_cnn_net.pt'
 device = torch.device('cuda')
 
 transform = trans.Compose([trans.ToTensor(),
